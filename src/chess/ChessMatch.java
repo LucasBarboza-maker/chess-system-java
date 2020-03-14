@@ -19,6 +19,7 @@ public class ChessMatch {
 		Position source = sourcePosition.toPosition();
 		Position target = targetPosition.toPosition();		
 		validateSourcePosition(source);
+		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);
 		return (ChessPiece)capturedPiece;
 	}
@@ -32,7 +33,16 @@ public class ChessMatch {
 	
 	private void validateSourcePosition(Position position) {
 		if(!board.theresIsAPiece(position)) {
-			throw new ChessException("Theres is no piece on source position");
+			throw new ChessException("Theres is no piece on source position (PRESS ENTER TO CONTINUE): ");
+		}
+		if(!board.piece(position).isThereAnyPossibleMove()) {
+			throw new ChessException("Theres is no possible moves for the chossen piece (PRESS ENTER TO CONTINUE): ");
+		}
+	}
+	
+	private void validateTargetPosition(Position source, Position target) {
+		if(!board.piece(source).possibleMove(target)) {
+			throw new ChessException("The chosen piece "+board.piece(source) +" can't move to target position");
 		}
 	}
 	
